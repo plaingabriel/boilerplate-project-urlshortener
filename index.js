@@ -2,8 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const validUrl = require("valid-url");
 const UrlModel = require("./model");
+const dns = require("dns");
+const URL = require("url").URL;
 
 // Basic Configuration
 const port = process.env.PORT || 3000;
@@ -21,34 +22,37 @@ app.get("/", function (req, res) {
 // Your first API endpoint
 app.post("/api/shorturl", async function (req, res) {
   const { url } = req.body;
-
-  if (!validUrl.isUri(url)) {
-    return res.json({ error: "invalid url" });
-  }
+  const hostname = new URL(url).hostname;
 
   try {
-    const findUrl = await UrlModel.findOne({ original_url: url });
+    dns.lookup(hostname, async (err, address, family) => {
+      if (err) {
+        return res.json({ error: "invalid URL" });
+      }
 
-    if (findUrl) {
-      return res.json({
-        original_url: findUrl.original_url,
-        short_url: findUrl.short_url,
+      const findUrl = await UrlModel.findOne({ original_url: url });
+
+      if (findUrl) {
+        return res.json({
+          original_url: findUrl.original_url,
+          short_url: findUrl.short_url,
+        });
+      }
+
+      const urls = await UrlModel.find();
+      const len = urls.length + 1;
+
+      const newUrl = new UrlModel({
+        original_url: url,
+        short_url: len,
       });
-    }
 
-    const urls = await UrlModel.find();
-    const len = urls.length + 1;
+      await newUrl.save();
 
-    const newUrl = new UrlModel({
-      original_url: url,
-      short_url: len,
-    });
-
-    await newUrl.save();
-
-    return res.json({
-      original_url: newUrl.original_url,
-      short_url: newUrl.short_url,
+      return res.json({
+        original_url: newUrl.original_url,
+        short_url: newUrl.short_url,
+      });
     });
   } catch (error) {
     console.log(error);

@@ -23,9 +23,6 @@ importers:
       mongoose:
         specifier: ^8.6.0
         version: 8.6.0
-      valid-url:
-        specifier: ^1.0.9
-        version: 1.0.9
 
 packages:
 
@@ -370,9 +367,6 @@ packages:
   utils-merge@1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
-
-  valid-url@1.0.9:
-    resolution: {integrity: sha512-QQDsV8OnSf5Uc30CKSwG9lnhMPe6exHtTXLRYX8uMwKENy640pU+2BgBL0LRbDh/eYRahNCS7aewCx0wf3NYVA==}
 
   vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
@@ -744,8 +738,6 @@ snapshots:
   unpipe@1.0.0: {}
 
   utils-merge@1.0.1: {}
-
-  valid-url@1.0.9: {}
 
   vary@1.1.2: {}
 
